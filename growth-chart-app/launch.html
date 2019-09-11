@@ -6,11 +6,24 @@
     <title>Growth Chart SMART Application</title>
     <script src="node_modules/fhirclient/build/fhir-client.js"></script>
     <script>
+      function getUrlParameter(sParam) {
+        var sPageURL = window.location.search.substring(1);
+        var sURLVariables = sPageURL.split('&');
+        for (var i = 0; i < sURLVariables.length; i++)
+        {
+          var sParameterName = sURLVariables[i].split('=');
+          if (sParameterName[0] == sParam) {
+            var res = sParameterName[1].replace(/\+/g, '%20');
+            return decodeURIComponent(res);
+          }
+        }
+      }
+
+      const patientId = getUrlParameter("patientId")
       FHIR.oauth2.authorize({
         "client_id": "growth_chart",
         "scope":  "patient/Observation.read patient/Patient.read offline_access",
-        // "client_id": "944d96a0-4caf-4a96-813e-bc38aadb1169" // HSPC
-        // "client_id": "5570f8be-6caf-4915-ae15-69545ab38e68" // Cerner
+        "patientId": patientId,
       });
     </script>
   </head>

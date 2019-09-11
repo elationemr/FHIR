@@ -6,11 +6,24 @@
     <title>Cardiac Risk SMART Application</title>
     <script src="https://cdn.jsdelivr.net/npm/fhirclient@2.0.6/build/fhir-client.js"></script>
     <script>
+      function getUrlParameter(sParam) {
+        var sPageURL = window.location.search.substring(1);
+        var sURLVariables = sPageURL.split('&');
+        for (var i = 0; i < sURLVariables.length; i++)
+        {
+          var sParameterName = sURLVariables[i].split('=');
+          if (sParameterName[0] == sParam) {
+            var res = sParameterName[1].replace(/\+/g, '%20');
+            return decodeURIComponent(res);
+          }
+        }
+      }
+
+      const patientId = getUrlParameter("patientId")
       FHIR.oauth2.authorize({
         "client_id": "cardiac_risk",
-        // "client_id": "2ac3d8e8-776c-4449-9dd8-e94087f7bdd7", // HSPC R3
-        // "client_id": "5f46a716-2a13-4038-b0c4-a243c54179cc", // HSPC R4
-        "scope":  "patient/*.read offline_access"
+        "scope":  "patient/*.read offline_access",
+        "patientId": patientId,
       });
     </script>
   </head>
